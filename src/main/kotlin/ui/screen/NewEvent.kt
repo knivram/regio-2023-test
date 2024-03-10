@@ -19,7 +19,6 @@ data class NewEvent(
     @Composable
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
-        // You would replace these with your state management logic
         var round by remember { mutableStateOf(0) }
         var electionTracker by remember { mutableStateOf(0) }
         var blueCardsPlayed by remember { mutableStateOf(0) }

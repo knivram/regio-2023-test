@@ -41,12 +41,16 @@ fun GameStats(
         }
 
         TableComponent(tableData = gameService.getEvents().map { TableRowData(it.toCellEntryList()) })
-        if (gameService.gameStarted) {
-            Button(
-                onClick = { navigator.push(NewEvent(gameService)) }
-            ) {
-                Text("New Event")
+
+        Button(
+            onClick = {
+                if (gameService.getPlayers().size >= 5) {
+                    gameService.gameStarted = true
+                    navigator.push(NewEvent(gameService))
+                }
             }
+        ) {
+            Text("New Event")
         }
     }
 }
@@ -55,7 +59,7 @@ data class CellEntry(
     val text: String,
     val color: Color? = null
 ) {
-    constructor(text: Int): this(text.toString())
+    constructor(text: Int) : this(text.toString())
 }
 
 data class TableRowData(val cells: List<CellEntry>)

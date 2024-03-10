@@ -21,7 +21,8 @@ class GameService {
         if (gameStarted) {
             gameStarted = false
             players = mutableStateMapOf()
-        } else {
+            events = mutableStateListOf()
+        } else if (players.size >= 5) {
             gameStarted = true
         }
     }
@@ -31,6 +32,8 @@ class GameService {
             throw RuntimeException(ExceptionCode.MAX_USER.name)
         } else if (players.values.find { it.name == name } != null) {
             throw RuntimeException(ExceptionCode.USER_EXISTS.name)
+        } else if (gameStarted) {
+            throw RuntimeException(ExceptionCode.GAME_ALREADY_STARTED.name)
         }
 
         val newUser = User(
