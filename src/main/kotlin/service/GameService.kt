@@ -10,11 +10,17 @@ import java.util.UUID
 import kotlin.random.Random
 
 const val MAX_PLAYER = 10
+const val MAX_CARD_B = 5
+const val MAX_CARD_R = 6
 
 class GameService {
     var gameStarted by mutableStateOf(false)
 
     private var players = mutableStateMapOf<UUID, User>()
+
+    var roundNumer by mutableStateOf(0)
+    var cardsB by mutableStateOf(0)
+    var cardsR by mutableStateOf(0)
 
     fun startOrReset() {
         if (gameStarted) {
