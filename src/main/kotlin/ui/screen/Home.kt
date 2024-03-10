@@ -19,7 +19,8 @@ data class Home(
     override fun Content() {
         Column {
             Button(
-                onClick = gameService::startOrReset
+                onClick = gameService::startOrReset,
+                enabled = gameService.getPlayers().size >= 5
             ) {
                 if (gameService.gameStarted) {
                     Text("New Game")

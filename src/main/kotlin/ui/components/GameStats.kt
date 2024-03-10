@@ -48,7 +48,8 @@ fun GameStats(
                     gameService.gameStarted = true
                     navigator.push(NewEvent(gameService))
                 }
-            }
+            },
+            enabled = gameService.getPlayers().size >= 5
         ) {
             Text("New Event")
         }
