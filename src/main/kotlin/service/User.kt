@@ -7,4 +7,6 @@ data class User(
     val id: UUID,
     val name: String,
     val color: Color,
-)
+) {
+    constructor(name: String) : this(UUID.randomUUID(), name, generateRandomColor())
+}

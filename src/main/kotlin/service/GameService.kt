@@ -17,22 +17,7 @@ class GameService {
 
     private var events = mutableStateListOf<Event>()
 
-    var roundNumer by mutableStateOf(0)
-    var cardsB by mutableStateOf(0)
-    var cardsR by mutableStateOf(0)
-
     fun startOrReset() {
-        val newUser = User(
-            id = UUID.randomUUID(),
-            name = "Theao",
-            color = generateRandomColor()
-        )
-        val newUser2 = User(
-            id = UUID.randomUUID(),
-            name = "Theao",
-            color = generateRandomColor()
-        )
-        events.add(Event(1, 17, 0, 0, 0, newUser, newUser2, "yes", 'R', "RRR", "RR"))
         if (gameStarted) {
             gameStarted = false
             players = mutableStateMapOf()
@@ -63,6 +48,9 @@ class GameService {
     }
 
     fun getEvents() = events.toList()
+    fun addEvent(event: Event) {
+        events.add(event)
+    }
 
 }
 

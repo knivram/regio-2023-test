@@ -7,35 +7,47 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.navigator.currentOrThrow
 import service.GameService
 import service.MAX_CARD_B
 import service.MAX_CARD_R
 import service.toCellEntryList
+import ui.screen.NewEvent
 
 @Composable
 fun GameStats(
     gameService: GameService
 ) {
+    val navigator = LocalNavigator.currentOrThrow
     Column {
         Row {
             Text("Round")
             Spacer(modifier = Modifier.width(16.dp))
-            Text(gameService.roundNumer.toString())
+            Text(gameService.getEvents().lastOrNull()?.round?.toString() ?: "0")
             Spacer(modifier = Modifier.width(32.dp))
             Column {
-                Text("Blue: ${gameService.cardsB}/$MAX_CARD_B")
+                Text("Blue: ${gameService.getEvents().lastOrNull()?.playedB?.toString() ?: "0"}/$MAX_CARD_B")
                 Spacer(modifier = Modifier.height(5.dp))
-                Text("Blue: ${gameService.cardsR}/$MAX_CARD_R")
+                Text("Blue: ${gameService.getEvents().lastOrNull()?.playedR?.toString() ?: "0"}/$MAX_CARD_R")
             }
         }
 
         TableComponent(tableData = gameService.getEvents().map { TableRowData(it.toCellEntryList()) })
+        if (gameService.gameStarted) {
+            Button(
+                onClick = { navigator.push(NewEvent(gameService)) }
+            ) {
+                Text("New Event")
+            }
+        }
     }
 }
 
