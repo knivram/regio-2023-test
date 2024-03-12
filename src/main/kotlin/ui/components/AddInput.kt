@@ -26,6 +26,7 @@ fun AddInput(
         onValueChange = {
             newEventName = it
         },
+        maxLines = 1,
         trailingIcon = {
             IconButton(
                 onClick = {

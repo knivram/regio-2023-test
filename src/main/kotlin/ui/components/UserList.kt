@@ -9,10 +9,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
@@ -20,7 +17,7 @@ import service.GameService
 
 @Composable
 fun UserList() {
-    var exceptionMessage by mutableStateOf<String?>(null)
+    var exceptionMessage by remember { mutableStateOf<String?>(null) }
 
     Column {
         Column(
@@ -60,7 +57,7 @@ fun UserList() {
                     }
                 }
             )
-            exceptionMessage?.let { Text(it) }
+            exceptionMessage?.let { Text(it, color = MaterialTheme.colors.error) }
         }
     }
 }
