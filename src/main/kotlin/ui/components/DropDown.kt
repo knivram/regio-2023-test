@@ -33,10 +33,7 @@ fun DropDown(
 
         ExposedDropdownMenu(
             expanded = expanded,
-            onDismissRequest = {
-                println("Clicked")
-                expanded = false
-            },
+            onDismissRequest = { expanded = false },
         ) {
             items.forEach { (id, value) ->
                 DropdownMenuItem(onClick = {

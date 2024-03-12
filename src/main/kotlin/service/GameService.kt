@@ -20,8 +20,8 @@ object GameService {
     fun startOrReset() {
         if (gameStarted) {
             gameStarted = false
-            players = mutableStateMapOf()
-            events = mutableStateListOf()
+            players.clear()
+            events.clear()
         } else if (players.size >= 5) {
             gameStarted = true
         }
