@@ -19,9 +19,7 @@ import androidx.compose.ui.unit.dp
 import service.GameService
 
 @Composable
-fun UserList(
-    userService: GameService
-) {
+fun UserList() {
     var exceptionMessage by mutableStateOf<String?>(null)
 
     Column {
@@ -29,7 +27,7 @@ fun UserList(
             modifier = Modifier.border(BorderStroke(1.dp, Color.Black)).padding(8.dp)
         ) {
             LazyColumn {
-                items(userService.getPlayers()) { player ->
+                items(GameService.getPlayers()) { player ->
                     Row(
                         modifier = Modifier.border(BorderStroke(1.dp, Color.Black))
                     ) {
@@ -38,7 +36,7 @@ fun UserList(
                         Text(player.name)
                         Spacer(modifier = Modifier.width(16.dp))
                         IconButton(
-                            onClick = { userService.removePlayer(player.id) }
+                            onClick = { GameService.removePlayer(player.id) }
                         ) {
                             Icon(
                                 imageVector = Icons.Default.Delete,
@@ -50,12 +48,12 @@ fun UserList(
             }
         }
 
-        if (userService.gameStarted.not()) {
+        if (GameService.gameStarted.not()) {
             AddInput(
                 placeHolder = "Neuer User",
                 onAdd = {
                     try {
-                        userService.addPlayer(it)
+                        GameService.addPlayer(it)
                         exceptionMessage = null
                     } catch (runtimeException: RuntimeException) {
                         exceptionMessage = runtimeException.message

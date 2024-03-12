@@ -10,7 +10,7 @@ const val MAX_PLAYER = 10
 const val MAX_CARD_B = 5
 const val MAX_CARD_R = 6
 
-class GameService {
+object GameService {
     var gameStarted by mutableStateOf(false)
 
     private var players = mutableStateMapOf<UUID, User>()

@@ -11,27 +11,25 @@ import service.GameService
 import ui.components.GameStats
 import ui.components.UserList
 
-data class Home(
-    val gameService: GameService
-) : Screen {
+class Home : Screen {
 
     @Composable
     override fun Content() {
         Column {
             Button(
-                onClick = gameService::startOrReset,
-                enabled = gameService.getPlayers().size >= 5
+                onClick = GameService::startOrReset,
+                enabled = GameService.getPlayers().size >= 5
             ) {
-                if (gameService.gameStarted) {
+                if (GameService.gameStarted) {
                     Text("New Game")
                 } else {
                     Text("Start Game")
                 }
             }
             Row {
-                UserList(gameService)
+                UserList()
                 Spacer(modifier = Modifier.width(56.dp))
-                GameStats(gameService)
+                GameStats()
             }
         }
     }

@@ -47,7 +47,7 @@ compose.desktop {
 
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
-            packageName = "regio-2023-test"
+            packageName = "Secret Role Tracker"
             packageVersion = "1.1.5"
         }
     }

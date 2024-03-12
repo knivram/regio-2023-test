@@ -13,9 +13,7 @@ import service.Event
 import service.GameService
 import service.User
 
-data class NewEvent(
-    val gameService: GameService
-) : Screen {
+class NewEvent : Screen {
     @Composable
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
@@ -112,7 +110,7 @@ data class NewEvent(
                             leaderDraw,
                             assistantDraw
                         )
-                        gameService.addEvent(newEvent)
+                        GameService.addEvent(newEvent)
                         navigator.pop()
                     }
                 ) {

@@ -23,33 +23,31 @@ import service.toCellEntryList
 import ui.screen.NewEvent
 
 @Composable
-fun GameStats(
-    gameService: GameService
-) {
+fun GameStats() {
     val navigator = LocalNavigator.currentOrThrow
     Column {
         Row {
             Text("Round")
             Spacer(modifier = Modifier.width(16.dp))
-            Text(gameService.getEvents().lastOrNull()?.round?.toString() ?: "0")
+            Text(GameService.getEvents().lastOrNull()?.round?.toString() ?: "0")
             Spacer(modifier = Modifier.width(32.dp))
             Column {
-                Text("Blue: ${gameService.getEvents().lastOrNull()?.playedB?.toString() ?: "0"}/$MAX_CARD_B")
+                Text("Blue: ${GameService.getEvents().lastOrNull()?.playedB?.toString() ?: "0"}/$MAX_CARD_B")
                 Spacer(modifier = Modifier.height(5.dp))
-                Text("Blue: ${gameService.getEvents().lastOrNull()?.playedR?.toString() ?: "0"}/$MAX_CARD_R")
+                Text("Blue: ${GameService.getEvents().lastOrNull()?.playedR?.toString() ?: "0"}/$MAX_CARD_R")
             }
         }
 
-        TableComponent(tableData = gameService.getEvents().map { TableRowData(it.toCellEntryList()) })
+        TableComponent(tableData = GameService.getEvents().map { TableRowData(it.toCellEntryList()) })
 
         Button(
             onClick = {
-                if (gameService.getPlayers().size >= 5) {
-                    gameService.gameStarted = true
-                    navigator.push(NewEvent(gameService))
+                if (GameService.getPlayers().size >= 5) {
+                    GameService.gameStarted = true
+                    navigator.push(NewEvent())
                 }
             },
-            enabled = gameService.getPlayers().size >= 5
+            enabled = GameService.getPlayers().size >= 5
         ) {
             Text("New Event")
         }
