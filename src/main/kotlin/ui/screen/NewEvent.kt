@@ -12,6 +12,7 @@ import cafe.adriel.voyager.navigator.currentOrThrow
 import service.Event
 import service.GameService
 import service.User
+import ui.components.DropDown
 
 class NewEvent : Screen {
     @Composable
@@ -21,8 +22,8 @@ class NewEvent : Screen {
         var electionTracker by remember { mutableStateOf(0) }
         var blueCardsPlayed by remember { mutableStateOf(0) }
         var redCardsPlayed by remember { mutableStateOf(0) }
-        var leader by remember { mutableStateOf("") }
-        var assistant by remember { mutableStateOf("") }
+        var leader by remember { mutableStateOf<User?>(null) }
+        var assistant by remember { mutableStateOf<User?>(null) }
         var voteAccepted by remember { mutableStateOf(false) }
         var blueIsPlayedActive by remember { mutableStateOf(false) }
         var leaderDraw by remember { mutableStateOf("") }
@@ -50,17 +51,17 @@ class NewEvent : Screen {
                 )
             }
             Row {
-                OutlinedTextField(
-                    value = leader,
-                    onValueChange = { leader = it },
+                DropDown(
+                    items = GameService.getPlayers().associate { it.id to it.name },
                     label = { Text("Leader") },
-                    singleLine = true
+                    onSelect = { leader = GameService.getPlayer(it) },
+                    value = leader?.name ?: ""
                 )
-                OutlinedTextField(
-                    value = assistant,
-                    onValueChange = { assistant = it },
+                DropDown(
+                    items = GameService.getPlayers().associate { it.id to it.name },
                     label = { Text("Assistant") },
-                    singleLine = true
+                    onSelect = { assistant = GameService.getPlayer(it) },
+                    value = assistant?.name ?: ""
                 )
             }
             Row {
@@ -97,21 +98,25 @@ class NewEvent : Screen {
                 }
                 Button(
                     onClick = {
-                        val newEvent = Event(
-                            round,
-                            0,
-                            electionTracker,
-                            blueCardsPlayed,
-                            redCardsPlayed,
-                            User(leader),
-                            User(assistant),
-                            if (voteAccepted) "yes" else "no",
-                            if (blueIsPlayedActive) 'B' else 'R',
-                            leaderDraw,
-                            assistantDraw
-                        )
-                        GameService.addEvent(newEvent)
-                        navigator.pop()
+                        val currentLeader = leader
+                        val currentAssistant = assistant
+                        if (currentLeader != null && currentAssistant != null) {
+                            val newEvent = Event(
+                                round,
+                                0,
+                                electionTracker,
+                                blueCardsPlayed,
+                                redCardsPlayed,
+                                currentLeader,
+                                currentAssistant,
+                                if (voteAccepted) "yes" else "no",
+                                if (blueIsPlayedActive) 'B' else 'R',
+                                leaderDraw,
+                                assistantDraw
+                            )
+                            GameService.addEvent(newEvent)
+                            navigator.pop()
+                        }
                     }
                 ) {
                     Text("Save Result")

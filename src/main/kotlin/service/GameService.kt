@@ -55,6 +55,7 @@ object GameService {
         events.add(event)
     }
 
+    fun getPlayer(id: UUID): User? = players[id]
 }
 
 // ChatGPT
