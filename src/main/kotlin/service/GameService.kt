@@ -29,11 +29,11 @@ object GameService {
 
     fun addPlayer(name: String) {
         if (players.size == MAX_PLAYER) {
-            throw RuntimeException(ExceptionCode.MAX_USER.name)
+            throw RuntimeException(ExceptionCode.MAX_USER.message)
         } else if (players.values.find { it.name == name } != null) {
-            throw RuntimeException(ExceptionCode.USER_EXISTS.name)
+            throw RuntimeException(ExceptionCode.USER_EXISTS.message)
         } else if (gameStarted) {
-            throw RuntimeException(ExceptionCode.GAME_ALREADY_STARTED.name)
+            throw RuntimeException(ExceptionCode.GAME_ALREADY_STARTED.message)
         }
 
         val newUser = User(

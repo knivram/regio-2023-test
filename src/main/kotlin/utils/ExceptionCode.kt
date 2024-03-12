@@ -1,7 +1,7 @@
 package utils
 
-enum class ExceptionCode {
-    USER_EXISTS,
-    MAX_USER,
-    GAME_ALREADY_STARTED,
+enum class ExceptionCode(val message: String) {
+    USER_EXISTS("Dieser User existiert bereits."),
+    MAX_USER("Sie haben das Maximum von $MAX_USER erreicht."),
+    GAME_ALREADY_STARTED("Das spiel hat bereits gestartet"),
 }
