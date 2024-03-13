@@ -1,12 +1,11 @@
 package service
 
 import androidx.compose.ui.graphics.Color
+import repository.Entity
 import java.util.UUID
 
 data class User(
-    val id: UUID,
+    override val id: UUID,
     val name: String,
     val color: Color,
-) {
-    constructor(name: String) : this(UUID.randomUUID(), name, generateRandomColor())
-}
+) : Entity

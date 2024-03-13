@@ -29,25 +29,25 @@ fun GameStats() {
         Row {
             Text("Round")
             Spacer(modifier = Modifier.width(16.dp))
-            Text(GameService.getEvents().lastOrNull()?.round?.toString() ?: "0")
+            Text(GameService.eventRepository.getAll().lastOrNull()?.round?.toString() ?: "0")
             Spacer(modifier = Modifier.width(32.dp))
             Column {
-                Text("Blue: ${GameService.getEvents().lastOrNull()?.playedB?.toString() ?: "0"}/$MAX_CARD_B")
+                Text("Blue: ${GameService.eventRepository.getAll().lastOrNull()?.playedB?.toString() ?: "0"}/$MAX_CARD_B")
                 Spacer(modifier = Modifier.height(5.dp))
-                Text("Blue: ${GameService.getEvents().lastOrNull()?.playedR?.toString() ?: "0"}/$MAX_CARD_R")
+                Text("Blue: ${GameService.eventRepository.getAll().lastOrNull()?.playedR?.toString() ?: "0"}/$MAX_CARD_R")
             }
         }
 
-        TableComponent(tableData = GameService.getEvents().map { TableRowData(it.toCellEntryList()) })
+        TableComponent(tableData = GameService.eventRepository.getAll().map { TableRowData(it.toCellEntryList()) })
 
         Button(
             onClick = {
-                if (GameService.getPlayers().size >= 5) {
+                if (GameService.playerRepository.getSize() >= 5) {
                     GameService.gameStarted = true
                     navigator.push(NewEvent())
                 }
             },
-            enabled = GameService.getPlayers().size >= 5
+            enabled = GameService.playerRepository.getSize() >= 5
         ) {
             Text("New Event")
         }

@@ -2,6 +2,7 @@ package service
 
 import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.Color
+import repository.Repository
 import utils.ExceptionCode
 import java.util.UUID
 import kotlin.random.Random
@@ -13,24 +14,24 @@ const val MAX_CARD_R = 6
 object GameService {
     var gameStarted by mutableStateOf(false)
 
-    private var players = mutableStateMapOf<UUID, User>()
+    val playerRepository = Repository<User>()
 
-    private var events = mutableStateListOf<Event>()
+    val eventRepository = Repository<Event>()
 
     fun startOrReset() {
         if (gameStarted) {
             gameStarted = false
-            players.clear()
-            events.clear()
-        } else if (players.size >= 5) {
+            playerRepository.clear()
+            eventRepository.clear()
+        } else if (playerRepository.getSize() >= 5) {
             gameStarted = true
         }
     }
 
-    fun addPlayer(name: String) {
-        if (players.size == MAX_PLAYER) {
+    fun Repository<User>.new(name: String) {
+        if (playerRepository.getSize() == MAX_PLAYER) {
             throw RuntimeException(ExceptionCode.MAX_USER.message)
-        } else if (players.values.find { it.name == name } != null) {
+        } else if (playerRepository.getAll().find { it.name == name } != null) {
             throw RuntimeException(ExceptionCode.USER_EXISTS.message)
         } else if (gameStarted) {
             throw RuntimeException(ExceptionCode.GAME_ALREADY_STARTED.message)
@@ -41,21 +42,8 @@ object GameService {
             name = name,
             color = generateRandomColor()
         )
-        players[newUser.id] = newUser
+        playerRepository.new(newUser)
     }
-
-    fun getPlayers() = players.values.toList().sortedBy { it.name }
-
-    fun removePlayer(id: UUID) {
-        players.remove(id)
-    }
-
-    fun getEvents() = events.toList()
-    fun addEvent(event: Event) {
-        events.add(event)
-    }
-
-    fun getPlayer(id: UUID): User? = players[id]
 }
 
 // ChatGPT

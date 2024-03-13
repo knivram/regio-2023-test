@@ -1,9 +1,12 @@
 package service
 
 import androidx.compose.ui.graphics.Color
+import repository.Entity
 import ui.components.CellEntry
+import java.util.*
 
 data class Event(
+    override val id: UUID,
     val round: Int,
     val activityDeckCount: Int,
     val electionTracker: Int,
@@ -15,7 +18,34 @@ data class Event(
     val playedActivity: Char,
     val leaderDraw: String,
     val assistantDraw: String
-)
+) : Entity {
+    constructor(
+        round: Int,
+        activityDeckCount: Int,
+        electionTracker: Int,
+        playedB: Int,
+        playedR: Int,
+        leader: User,
+        assistant: User,
+        voteAccepted: String,
+        playedActivity: Char,
+        leaderDraw: String,
+        assistantDraw: String
+    ) : this(
+        UUID.randomUUID(),
+        round,
+        activityDeckCount,
+        electionTracker,
+        playedB,
+        playedR,
+        leader,
+        assistant,
+        voteAccepted,
+        playedActivity,
+        leaderDraw,
+        assistantDraw
+    )
+}
 
 fun Event.toCellEntryList(): List<CellEntry> {
     return listOf(
