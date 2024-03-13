@@ -3,7 +3,7 @@ package repository
 import androidx.compose.runtime.mutableStateMapOf
 import java.util.UUID
 
-class Repository<T : Entity> {
+abstract class Repository<T : Entity> {
     private var entities = mutableStateMapOf<UUID, T>()
 
     fun getSize(): Int = entities.size

@@ -14,7 +14,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import service.GameService
-import service.GameService.new
 
 @Composable
 fun UserList() {
@@ -25,7 +24,7 @@ fun UserList() {
             modifier = Modifier.border(BorderStroke(1.dp, Color.Black)).padding(8.dp)
         ) {
             LazyColumn {
-                items(GameService.playerRepository.getAll()) { player ->
+                items(GameService.PlayerRepository.getAll()) { player ->
                     Row(
                         modifier = Modifier.border(BorderStroke(1.dp, Color.Black))
                     ) {
@@ -34,7 +33,7 @@ fun UserList() {
                         Text(player.name)
                         Spacer(modifier = Modifier.width(16.dp))
                         IconButton(
-                            onClick = { GameService.playerRepository.remove(player.id) }
+                            onClick = { GameService.PlayerRepository.remove(player.id) }
                         ) {
                             Icon(
                                 imageVector = Icons.Default.Delete,
@@ -51,7 +50,7 @@ fun UserList() {
                 placeHolder = "Neuer User",
                 onAdd = {
                     try {
-                        GameService.playerRepository.new(it)
+                        GameService.PlayerRepository.new(it)
                         exceptionMessage = null
                     } catch (runtimeException: RuntimeException) {
                         exceptionMessage = runtimeException.message

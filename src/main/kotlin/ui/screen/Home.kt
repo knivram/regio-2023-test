@@ -18,7 +18,7 @@ class Home : Screen {
         Column {
             Button(
                 onClick = GameService::startOrReset,
-                enabled = GameService.playerRepository.getSize() >= 5
+                enabled = GameService.PlayerRepository.getSize() >= 5
             ) {
                 if (GameService.gameStarted) {
                     Text("New Game")

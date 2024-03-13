@@ -52,15 +52,15 @@ class NewEvent : Screen {
             }
             Row {
                 DropDown(
-                    items = GameService.playerRepository.getAll().associate { it.id to it.name },
+                    items = GameService.PlayerRepository.getAll().associate { it.id to it.name },
                     label = { Text("Leader") },
-                    onSelect = { leader = GameService.playerRepository.getOne(it) },
+                    onSelect = { leader = GameService.PlayerRepository.getOne(it) },
                     value = leader?.name ?: ""
                 )
                 DropDown(
-                    items = GameService.playerRepository.getAll().associate { it.id to it.name },
+                    items = GameService.PlayerRepository.getAll().associate { it.id to it.name },
                     label = { Text("Assistant") },
-                    onSelect = { assistant = GameService.playerRepository.getOne(it) },
+                    onSelect = { assistant = GameService.PlayerRepository.getOne(it) },
                     value = assistant?.name ?: ""
                 )
             }
@@ -114,7 +114,7 @@ class NewEvent : Screen {
                                 leaderDraw,
                                 assistantDraw
                             )
-                            GameService.eventRepository.new(newEvent)
+                            GameService.EventRepository.new(newEvent)
                             navigator.pop()
                         }
                     }

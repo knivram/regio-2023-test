@@ -14,36 +14,37 @@ const val MAX_CARD_R = 6
 object GameService {
     var gameStarted by mutableStateOf(false)
 
-    val playerRepository = Repository<User>()
+    object PlayerRepository : Repository<User>() {
+        fun new(name: String) {
+            if (PlayerRepository.getSize() == MAX_PLAYER) {
+                throw RuntimeException(ExceptionCode.MAX_USER.message)
+            } else if (PlayerRepository.getAll().find { it.name == name } != null) {
+                throw RuntimeException(ExceptionCode.USER_EXISTS.message)
+            } else if (gameStarted) {
+                throw RuntimeException(ExceptionCode.GAME_ALREADY_STARTED.message)
+            }
 
-    val eventRepository = Repository<Event>()
+            val newUser = User(
+                id = UUID.randomUUID(),
+                name = name,
+                color = generateRandomColor()
+            )
+            PlayerRepository.new(newUser)
+        }
+    }
+
+    object EventRepository : Repository<Event>()
 
     fun startOrReset() {
         if (gameStarted) {
             gameStarted = false
-            playerRepository.clear()
-            eventRepository.clear()
-        } else if (playerRepository.getSize() >= 5) {
+            PlayerRepository.clear()
+            EventRepository.clear()
+        } else if (PlayerRepository.getSize() >= 5) {
             gameStarted = true
         }
     }
 
-    fun Repository<User>.new(name: String) {
-        if (playerRepository.getSize() == MAX_PLAYER) {
-            throw RuntimeException(ExceptionCode.MAX_USER.message)
-        } else if (playerRepository.getAll().find { it.name == name } != null) {
-            throw RuntimeException(ExceptionCode.USER_EXISTS.message)
-        } else if (gameStarted) {
-            throw RuntimeException(ExceptionCode.GAME_ALREADY_STARTED.message)
-        }
-
-        val newUser = User(
-            id = UUID.randomUUID(),
-            name = name,
-            color = generateRandomColor()
-        )
-        playerRepository.new(newUser)
-    }
 }
 
 // ChatGPT
