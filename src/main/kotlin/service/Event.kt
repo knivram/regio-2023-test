@@ -45,6 +45,10 @@ data class Event(
         leaderDraw,
         assistantDraw
     )
+
+    override fun insert() {
+
+    }
 }
 
 fun Event.toCellEntryList(): List<CellEntry> {

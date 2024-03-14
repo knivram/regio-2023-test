@@ -2,7 +2,10 @@ package service
 
 import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.Color
+import org.jetbrains.exposed.sql.*
+import org.jetbrains.exposed.sql.transactions.transaction
 import repository.Repository
+import repository.Users
 import utils.ExceptionCode
 import java.util.UUID
 import kotlin.random.Random
@@ -12,9 +15,30 @@ const val MAX_CARD_B = 5
 const val MAX_CARD_R = 6
 
 object GameService {
+    val database = Database.connect(
+        "jdbc:mysql://localhost:3306/regio",
+        driver = "com.mysql.cj.jdbc.Driver",
+        user = "root",
+        password = "password"
+    )
     var gameStarted by mutableStateOf(false)
 
+    init {
+        transaction(database) {
+            addLogger(StdOutSqlLogger)
+            SchemaUtils.create(Users)
+        }
+    }
+
     object PlayerRepository : Repository<User>() {
+        init {
+            transaction(database) {
+                val users = Users.selectAll()
+                    .map { User(it[Users.id].value, it[Users.name], generateRandomColor()) }
+                this@PlayerRepository.insertOnStartUp(users)
+            }
+        }
+
         fun new(name: String) {
             if (PlayerRepository.getSize() == MAX_PLAYER) {
                 throw RuntimeException(ExceptionCode.MAX_USER.message)
